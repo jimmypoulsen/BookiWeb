@@ -5,17 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace BookiWeb.Controllers
 {
-    public class EmployeeController : Controller
+    public class EmployeesController : Controller
     {
 
         string BaseUrl = "https://localhost:44314/api/";
-        public async Task<ActionResult> List() {
+        public async Task<ActionResult> Index() {
             List<Employee> EmpInfo = new List<Employee>();
 
             using (var client = new HttpClient()) {
@@ -43,11 +44,28 @@ namespace BookiWeb.Controllers
             }
         }
 
-        // GET: Employee
+        public ActionResult Create() {
+            ViewBag.Message = "Create new employee";
+
+            return View();
+        }
+
         [HttpPost]
-        public ActionResult Index(Employee employee)
-        {
-            return View(employee);
+        public async Task<ActionResult> Create(Employee emp) {
+            var root = new {
+                Employee = emp
+            };
+            var json = JsonConvert.SerializeObject(root);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var url = BaseUrl + "/employees";
+            using (var client = new HttpClient()) {
+                var response = await client.PostAsync(url, data);
+                string result = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine(result);
+            }
+
+            return RedirectToAction("Index");
         }
 
         /*[HttpGet]
