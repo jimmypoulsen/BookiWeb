@@ -2,17 +2,19 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace BookiWeb.Controllers {
-    public class ReservationsController : Controller {
+    public class BeveragesController : Controller {
         string BaseUrl = "https://localhost:44314/api/";
         public async Task<ActionResult> Index() {
-            List<Reservation> ReservationInfo = new List<Reservation>();
+            List<Beverage> BeverageInfo = new List<Beverage>();
 
             using (var client = new HttpClient()) {
                 //Passing service base url  
@@ -23,37 +25,37 @@ namespace BookiWeb.Controllers {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
-                HttpResponseMessage Res = await client.GetAsync("reservations");
+                HttpResponseMessage Res = await client.GetAsync("beverages");
 
                 //Checking the response is successful or not which is sent using HttpClient  
                 if (Res.IsSuccessStatusCode) {
                     //Storing the response details recieved from web api   
-                    var ReservationResponse = Res.Content.ReadAsStringAsync().Result;
+                    var BeverageResponse = Res.Content.ReadAsStringAsync().Result;
 
                     //Deserializing the response recieved from web api and storing into the Employee list  
-                    ReservationInfo = JsonConvert.DeserializeObject<List<Reservation>>(ReservationResponse);
+                    BeverageInfo = JsonConvert.DeserializeObject<List<Beverage>>(BeverageResponse);
 
                 }
                 //returning the employee list to view  
-                return View(ReservationInfo);
+                return View(BeverageInfo);
             }
         }
 
         public ActionResult Create() {
-            ViewBag.Message = "Create new reservation";
+            ViewBag.Message = "Create new beverage";
 
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Reservation res) {
+        public async Task<ActionResult> Create(Beverage res) {
             var root = new {
-                Reservation = res
+                Beverage = res
             };
             var json = JsonConvert.SerializeObject(root);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var url = BaseUrl + "/reservations";
+            var url = BaseUrl + "/beverages";
             using (var client = new HttpClient()) {
                 var response = await client.PostAsync(url, data);
                 string result = response.Content.ReadAsStringAsync().Result;
@@ -64,10 +66,45 @@ namespace BookiWeb.Controllers {
         }
 
 
-        public ActionResult Show() {
-            ViewBag.Message = "Your contact page.";
+        public ActionResult Delete() {
+            ViewBag.Message = "Delete a beverage";
 
             return View();
         }
-    }
+
+        /*[HttpDelete]
+        public async Task<ActionResult> Delete() {
+            var url = BaseUrl + "/beverages";
+            using (var client = new HttpClient()) {
+                var response = await client.DeleteAsync(url);
+                string result = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine(result);
+                HttpResponseMessage Res = await client.GetAsync("beverages");
+            }
+
+            return RedirectToAction("Index");
+        }*/
+
+        [HttpDelete]
+        public ActionResult Delete(int id) {
+            using (var client = new HttpClient()) {
+                var url = BaseUrl + "/beverages";
+
+                //HTTP DELETE
+                var deleteTask = client.DeleteAsync(url + id);
+                deleteTask.Wait();
+
+                var result = deleteTask.Result;
+                if (result.IsSuccessStatusCode) {
+
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+    } 
+    
+
 }

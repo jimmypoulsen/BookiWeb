@@ -2,17 +2,21 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
-namespace BookiWeb.Controllers {
-    public class ReservationsController : Controller {
+namespace BookiWeb.Controllers
+{
+    public class TablePackagesController : Controller
+    {
         string BaseUrl = "https://localhost:44314/api/";
         public async Task<ActionResult> Index() {
-            List<Reservation> ReservationInfo = new List<Reservation>();
+            List<TablePackage> TablePackageInfo = new List<TablePackage>();
 
             using (var client = new HttpClient()) {
                 //Passing service base url  
@@ -23,37 +27,37 @@ namespace BookiWeb.Controllers {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
-                HttpResponseMessage Res = await client.GetAsync("reservations");
+                HttpResponseMessage Res = await client.GetAsync("tablePackages");
 
                 //Checking the response is successful or not which is sent using HttpClient  
                 if (Res.IsSuccessStatusCode) {
                     //Storing the response details recieved from web api   
-                    var ReservationResponse = Res.Content.ReadAsStringAsync().Result;
+                    var TablePackageResponse = Res.Content.ReadAsStringAsync().Result;
 
                     //Deserializing the response recieved from web api and storing into the Employee list  
-                    ReservationInfo = JsonConvert.DeserializeObject<List<Reservation>>(ReservationResponse);
+                    TablePackageInfo = JsonConvert.DeserializeObject<List<TablePackage>>(TablePackageResponse);
 
                 }
                 //returning the employee list to view  
-                return View(ReservationInfo);
+                return View(TablePackageInfo);
             }
         }
 
         public ActionResult Create() {
-            ViewBag.Message = "Create new reservation";
+            ViewBag.Message = "Create new tablePackage";
 
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Reservation res) {
+        public async Task<ActionResult> Create(TablePackage res) {
             var root = new {
-                Reservation = res
+                TablePackage = res
             };
             var json = JsonConvert.SerializeObject(root);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var url = BaseUrl + "/reservations";
+            var url = BaseUrl + "/tablePackages";
             using (var client = new HttpClient()) {
                 var response = await client.PostAsync(url, data);
                 string result = response.Content.ReadAsStringAsync().Result;
@@ -70,4 +74,5 @@ namespace BookiWeb.Controllers {
             return View();
         }
     }
-}
+
+    }
