@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace BookiWeb.Controllers {
     public class HomeController : Controller {
-        string BaseUrl = "https://localhost:44314/api/";
+        /*string BaseUrl = "https://localhost:44314/api/";
         public async Task<ActionResult> List() {
             List<Employee> EmpInfo = new List<Employee>();
 
@@ -36,7 +36,7 @@ namespace BookiWeb.Controllers {
                 //returning the employee list to view  
                 return View(EmpInfo);
             }
-        }
+        }*/
 
         public ActionResult Index() {
             ViewBag.Message = "My index page";
