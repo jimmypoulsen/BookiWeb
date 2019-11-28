@@ -65,33 +65,33 @@ namespace BookiWeb.Controllers {
             return RedirectToAction("Index");
         }
 
+        public async Task<ActionResult> Delete(int id) {
+            using (var client = new HttpClient()) {
+                var url = BaseUrl + "/beverages/" + id;
+                var result = await client.DeleteAsync(url);
+                if (result.IsSuccessStatusCode) {
 
+                    return RedirectToAction("Index");
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+
+        // This does not seem to be neccesary
+        /*[HttpDelete]
         public ActionResult Delete() {
             ViewBag.Message = "Delete a beverage";
 
             return View();
-        }
-
-        /*[HttpDelete]
-        public async Task<ActionResult> Delete() {
-            var url = BaseUrl + "/beverages";
-            using (var client = new HttpClient()) {
-                var response = await client.DeleteAsync(url);
-                string result = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(result);
-                HttpResponseMessage Res = await client.GetAsync("beverages");
-            }
-
-            return RedirectToAction("Index");
         }*/
 
-        [HttpDelete]
-        public ActionResult Delete(int id) {
+        /*public ActionResult Delete(int id) {
             using (var client = new HttpClient()) {
-                var url = BaseUrl + "/beverages";
+                var url = BaseUrl + "/beverages/" + id;
 
                 //HTTP DELETE
-                var deleteTask = client.DeleteAsync(url + id);
+                var deleteTask = client.DeleteAsync(url);
                 deleteTask.Wait();
 
                 var result = deleteTask.Result;
@@ -100,9 +100,8 @@ namespace BookiWeb.Controllers {
                     return RedirectToAction("Index");
                 }
             }
-
             return RedirectToAction("Index");
-        }
+        }*/
 
     } 
     

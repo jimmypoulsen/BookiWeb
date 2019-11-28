@@ -215,7 +215,6 @@
     <Content Include="Views\Beverages\Create.cshtml" />
     <Content Include="Views\TablePackages\Index.cshtml" />
     <Content Include="Views\TablePackages\Create.cshtml" />
-    <Content Include="Views\Beverages\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

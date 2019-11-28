@@ -68,9 +68,16 @@ namespace BookiWeb.Controllers
             return RedirectToAction("Index");
         }
 
-        /*[HttpGet]
-        public ActionResult View() {
-            return View();
-        }*/
+        public async Task<ActionResult> Delete(int id) {
+            using (var client = new HttpClient()) {
+                var url = BaseUrl + "/employees/" + id;
+                var result = await client.DeleteAsync(url);
+                if (result.IsSuccessStatusCode) {
+
+                    return RedirectToAction("Index");
+                }
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

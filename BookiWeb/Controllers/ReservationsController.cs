@@ -62,12 +62,16 @@ namespace BookiWeb.Controllers {
 
             return RedirectToAction("Index");
         }
+        public async Task<ActionResult> Delete(int id) {
+            using (var client = new HttpClient()) {
+                var url = BaseUrl + "/reservations/" + id;
+                var result = await client.DeleteAsync(url);
+                if (result.IsSuccessStatusCode) {
 
-
-        public ActionResult Show() {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+                    return RedirectToAction("Index");
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }
