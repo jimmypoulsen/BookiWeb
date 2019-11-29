@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace BookiWeb.Controllers {
-    public class ReservationsController : Controller {
+    public class ReservationsController : AuthenticationController {
         string BaseUrl = "https://localhost:44314/api/";
         public async Task<ActionResult> Index() {
             List<Reservation> ReservationInfo = new List<Reservation>();
