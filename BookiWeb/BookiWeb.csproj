@@ -161,6 +161,7 @@
     <Compile Include="Controllers\BeveragesController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RegistrationsController.cs" />
     <Compile Include="Controllers\ReservationsController.cs" />
     <Compile Include="Controllers\SessionsController.cs" />
     <Compile Include="Controllers\TablePackagesController.cs" />
@@ -219,6 +220,7 @@
     <Content Include="Views\TablePackages\Index.cshtml" />
     <Content Include="Views\TablePackages\Create.cshtml" />
     <Content Include="Views\Sessions\Create.cshtml" />
+    <Content Include="Views\Registrations\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
