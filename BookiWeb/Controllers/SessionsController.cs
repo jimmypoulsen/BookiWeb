@@ -38,17 +38,29 @@ namespace BookiWeb.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     HttpCookie AuthCookies = new HttpCookie("AuthCookies");
-                    AuthCookies.Value = res.Email;
+                    AuthCookies["email"] = res.Email;
+                    AuthCookies["customerId"] = "" + res.Id;
                     AuthCookies.Expires = DateTime.Now.AddHours(72);
                     Response.SetCookie(AuthCookies);
-                    Response.Flush();
-
-                    return RedirectToAction("Index", "Home");
+                    Response.Redirect("/");
                 }
-                
+                else
+                {
+                    return RedirectToAction("New");
+                }
             }
-
             return RedirectToAction("New");
+        }
+
+        [HttpPost]
+        public ActionResult Delete()
+        {
+            HttpCookie AuthCookies = new HttpCookie("AuthCookies");
+            AuthCookies.Value = "";
+            AuthCookies.Expires = DateTime.Now.AddYears(-1);
+            Response.Cookies.Add(AuthCookies);
+
+            return RedirectToAction("Create");
         }
     }
 }

@@ -23,22 +23,29 @@ namespace BookiWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Customer customer)
         {
-            var customerInfo = new
+            if (ModelState.IsValid)
             {
-                Customer = customer
-            };
-            var json = JsonConvert.SerializeObject(customerInfo);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
+                var customerInfo = new
+                {
+                    Customer = customer
+                };
+                var json = JsonConvert.SerializeObject(customerInfo);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var url = BaseUrl + "/customers";
-            using (var client = new HttpClient())
+                var url = BaseUrl + "/customers";
+                using (var client = new HttpClient())
+                {
+                    var response = await client.PostAsync(url, data);
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    if (response.IsSuccessStatusCode)
+                        return RedirectToAction("Create", "Sessions");
+                    else
+                        return RedirectToAction("Create");
+                }
+            }
+            else
             {
-                var response = await client.PostAsync(url, data);
-                string result = response.Content.ReadAsStringAsync().Result;
-                if (response.IsSuccessStatusCode)
-                    return RedirectToAction("Create", "Sessions");
-                else
-                    return RedirectToAction("Create");
+                return View(customer);
             }
         }
     }

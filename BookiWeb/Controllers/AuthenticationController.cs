@@ -8,12 +8,12 @@ using System.Web.Routing;
 
 namespace BookiWeb.Controllers
 {
-    public class AuthenticationController : Controller
+    public class AuthenticationController : BaseController
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             HttpCookie cookie = Request.Cookies["AuthCookies"];
-            if (cookie == null || cookie.Value == null)
+            if (cookie == null || cookie["email"] == null || cookie["customerId"] == null)
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Sessions", action = "Create" }));
 

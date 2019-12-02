@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using BookiWeb.Helpers
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -26,6 +27,22 @@
                     <li>@Html.ActionLink("Beverages", "Index", "Beverages")</li>
                     <li>@Html.ActionLink("TablePackages", "Index", "TablePackages")</li>
                 </ul>
+
+                @if (SessionsHelper.Exists("AuthCookies"))
+                {
+                    <form action="/Sessions/Delete" method="post" id="logout_form">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="javascript:{}" onclick="document.getElementById('logout_form').submit(); return false;">Log out</a></li>
+                        </ul>
+                    </form>
+                }
+                else
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Log in", "Create", "Sessions")</li>
+                        <li>@Html.ActionLink("Register", "Create", "Registrations")</li>
+                    </ul>
+                }
             </div>
         </div>
     </div>
