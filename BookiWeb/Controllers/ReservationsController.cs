@@ -32,6 +32,7 @@ namespace BookiWeb.Controllers {
             else
             {
                 ViewBag.VenueId = venueId;
+                
                 return View();
             }
             

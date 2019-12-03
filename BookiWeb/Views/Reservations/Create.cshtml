@@ -7,10 +7,10 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
     <h4>Reservation</h4>
     <hr />
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    @Html.HiddenFor(model => model.CustomerId, htmlAttributes: new { @value = SessionsHelper.GetId() })
+    @Html.HiddenFor(model => model.CustomerId, new { Value = SessionsHelper.GetId() })
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

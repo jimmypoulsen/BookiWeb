@@ -39,7 +39,7 @@ namespace BookiWeb.Controllers
                 {
                     HttpCookie AuthCookies = new HttpCookie("AuthCookies");
                     AuthCookies["email"] = res.Email;
-                    AuthCookies["customerId"] = "" + res.Id;
+                    AuthCookies["customerId"] = "" + response.Content.ReadAsStringAsync().Result;
                     AuthCookies.Expires = DateTime.Now.AddHours(72);
                     Response.SetCookie(AuthCookies);
                     Response.Redirect("/");
