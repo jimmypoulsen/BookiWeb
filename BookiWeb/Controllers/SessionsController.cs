@@ -29,6 +29,7 @@ namespace BookiWeb.Controllers
                 Customer = res
             };
             var json = JsonConvert.SerializeObject(customer);
+            Debug.WriteLine(json);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
 
             var url = BaseUrl + "/sessions";

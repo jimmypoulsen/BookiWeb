@@ -175,6 +175,7 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Reservation.cs" />
+    <Compile Include="Models\Table.cs" />
     <Compile Include="Models\TablePackage.cs" />
     <Compile Include="Models\Venue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -26,13 +26,25 @@ namespace BookiWeb.Controllers {
             }
         }
 
-        public ActionResult Create(int venueId = 0) {
+        public async Task<ActionResult> Create(int venueId = 0) {
             if (venueId == 0)
                 return RedirectToAction("Index", "Venues");
             else
             {
+                List<Venue> VenueInfo = new List<Venue>();
+
+                using (var client = base.GetClient())
+                {
+                    HttpResponseMessage Res = await client.GetAsync("venues/" + venueId);
+                    if (Res.IsSuccessStatusCode)
+                    {
+                        var VenueResponse = Res.Content.ReadAsStringAsync().Result;
+                        VenueInfo = JsonConvert.DeserializeObject<List<Venue>>(VenueResponse);
+                    }
+                }
+
                 ViewBag.VenueId = venueId;
-                
+                ViewBag.Venue = VenueInfo[0];
                 return View();
             }
             
@@ -40,19 +52,36 @@ namespace BookiWeb.Controllers {
 
         [HttpPost]
         public async Task<ActionResult> Create(Reservation res) {
+            string[] tablePackageIds = res.TablePackageIds.ToArray();
             if (ModelState.IsValid)
             {
-                var root = new
+                string reservationId;
+                object root = new
                 {
-                    Reservation = res
+                    Reservation = res,
                 };
                 var json = JsonConvert.SerializeObject(root);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
 
                 using (var client = base.GetClient())
                 {
-                    var response = await client.PostAsync(base.BaseUrl, data);
-                    string result = response.Content.ReadAsStringAsync().Result;
+                    var response = await client.PostAsync(base.BaseUrl + "/reservations", data);
+                    reservationId = response.Content.ReadAsStringAsync().Result;
+                    Debug.WriteLine($"reservationId = {reservationId}");
+                }
+
+                string resId = reservationId.Replace(@"\", string.Empty);
+                foreach(string tablePackageId in tablePackageIds)
+                {
+                    json = "{\"ReservationTablePackage\": {\"ReservationId\": " + resId + ", \"TablePackageId\": " + tablePackageId + "}}";
+                    Debug.WriteLine(json);
+                    Debug.WriteLine(json);
+                    data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    using (var client = base.GetClient())
+                    {
+                        var response = await client.PostAsync(base.BaseUrl + "/reservationstablepackages", data);
+                    }
                 }
 
                 return RedirectToAction("Index");
