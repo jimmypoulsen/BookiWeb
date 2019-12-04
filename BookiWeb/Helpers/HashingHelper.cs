@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookiWeb.Helpers
 {
-    public static class SecurePasswordHelper
+    public static class HashingHelper
     {
         private const string salt = "p9afXynoO3UNjuEAQmTA";
 

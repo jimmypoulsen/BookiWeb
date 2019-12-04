@@ -25,7 +25,7 @@ namespace BookiWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Customer res)
         {
-            res.Password = SecurePasswordHelper.GenerateHash(res.Password);
+            res.Password = HashingHelper.GenerateHash(res.Password);
 
             var customer = new
             {
