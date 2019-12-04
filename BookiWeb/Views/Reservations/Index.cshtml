@@ -9,67 +9,76 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ReservationNo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateTimeStart)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateTimeEnd)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.State)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CustomerId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.VenueId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReservationNo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateTimeStart)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateTimeEnd)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.State)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VenueId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedAt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdatedAt)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id }, new { onclick = "return confirm('Are you sure you want to delete this reservation?');" })
-        </td>
-    </tr>
+@if (Model.Any())
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReservationNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTimeStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTimeEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VenueId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservationNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTimeStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTimeEnd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VenueId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { onclick = "return confirm('Are you sure you want to delete this reservation?');" })
+                </td>
+            </tr>
+        }
+
+    </table>
 }
-
-</table>
+else
+{
+    <p>You have no reservations ..</p>
+}

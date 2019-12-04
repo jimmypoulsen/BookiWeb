@@ -29,6 +29,17 @@ namespace BookiWeb.Helpers
             _context.Response.Cookies.Add(c);
         }
 
+        public static bool IsAuthenticated()
+        {
+            if (Exists("AuthCookies"))
+            {
+                HttpCookie AuthCookie = _context.Request.Cookies["AuthCookies"];
+                return AuthCookie["email"].Length > 0 && AuthCookie["customerId"].Length > 0;
+            }
+            else
+                return false;
+        }
+
         public static string GetEmail()
         {
             HttpCookie AuthCookie = _context.Request.Cookies["AuthCookies"];

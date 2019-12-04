@@ -1,4 +1,5 @@
 ﻿using BookiWeb.Models;
+using BookiWeb.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace BookiWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Customer res)
         {
+            res.Password = SecurePasswordHelper.GenerateHash(res.Password);
+
             var customer = new
             {
                 Customer = res

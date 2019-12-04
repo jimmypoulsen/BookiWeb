@@ -22,13 +22,14 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Employees", "Index", "Employees")</li>
-                    <li>@Html.ActionLink("Reservations", "Index", "Reservations")</li>
-                    <li>@Html.ActionLink("Beverages", "Index", "Beverages")</li>
-                    <li>@Html.ActionLink("TablePackages", "Index", "TablePackages")</li>
+                    <li>@Html.ActionLink("Venues", "Index", "Venues")</li>
+                    @if (SessionsHelper.IsAuthenticated())
+                    {
+                        <li>@Html.ActionLink("My reservations", "Index", "Reservations")</li>
+                    }
                 </ul>
 
-                @if (SessionsHelper.Exists("AuthCookies"))
+                @if (SessionsHelper.IsAuthenticated())
                 {
                     <form action="/Sessions/Delete" method="post" id="logout_form">
                         <ul class="nav navbar-nav navbar-right">
@@ -50,7 +51,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Booki</p>
         </footer>
     </div>
 

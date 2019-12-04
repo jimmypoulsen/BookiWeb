@@ -1,4 +1,5 @@
 ﻿using BookiWeb.Models;
+using BookiWeb.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace BookiWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                customer.Password = SecurePasswordHelper.GenerateHash(customer.Password);
                 var customerInfo = new
                 {
                     Customer = customer

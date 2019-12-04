@@ -20,9 +20,12 @@ namespace BookiWeb.Models {
         [Required]
         public int VenueId { get; set; }
         [Required]
+        [Display(Name = "Table", Description = "The table that will be reserved")]
         public int TableId { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
+        [Required]
+        [Display(Name = "Table packages", Description = "Table packages that will be payed upon arrival")]
         public List<string> TablePackageIds { get; set; }
     }
 }
