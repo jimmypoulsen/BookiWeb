@@ -50,10 +50,10 @@ namespace BookiWeb.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("New");
+                    return RedirectToAction("Create");
                 }
             }
-            return RedirectToAction("New");
+            return RedirectToAction("Create");
         }
 
         [HttpPost]
