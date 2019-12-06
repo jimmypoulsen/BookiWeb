@@ -25,35 +25,38 @@ namespace BookiWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Customer res)
         {
-            res.Password = HashingHelper.GenerateHash(res.Password);
-
-            var customer = new
+            if (res.Email != null && res.Password != null)
             {
-                Customer = res
-            };
-            var json = JsonConvert.SerializeObject(customer);
-            Debug.WriteLine(json);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
+                res.Password = HashingHelper.GenerateHash(res.Password);
 
-            var url = BaseUrl + "/sessions";
-            using (var client = new HttpClient())
-            {
-                var response = await client.PostAsync(url, data);
-                if (response.IsSuccessStatusCode)
+                var customer = new
                 {
-                    HttpCookie AuthCookies = new HttpCookie("AuthCookies");
-                    AuthCookies["email"] = res.Email;
-                    AuthCookies["customerId"] = "" + response.Content.ReadAsStringAsync().Result;
-                    AuthCookies.Expires = DateTime.Now.AddHours(72);
-                    Response.SetCookie(AuthCookies);
-                    Response.Redirect("/");
-                }
-                else
+                    Customer = res
+                };
+                var json = JsonConvert.SerializeObject(customer);
+                Debug.WriteLine(json);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var url = BaseUrl + "/sessions";
+                using (var client = new HttpClient())
                 {
-                    return RedirectToAction("Create");
+                    var response = await client.PostAsync(url, data);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        HttpCookie AuthCookies = new HttpCookie("AuthCookies");
+                        AuthCookies["email"] = res.Email;
+                        AuthCookies["customerId"] = "" + response.Content.ReadAsStringAsync().Result;
+                        AuthCookies.Expires = DateTime.Now.AddHours(72);
+                        Response.SetCookie(AuthCookies);
+                        Response.Redirect("/");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Create", new { message = "Wrong email/password" });
+                    }
                 }
             }
-            return RedirectToAction("Create");
+            return RedirectToAction("Create", new { message = "Something went wrong .." });
         }
 
         [HttpPost]

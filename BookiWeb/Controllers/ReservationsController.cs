@@ -52,9 +52,9 @@ namespace BookiWeb.Controllers {
 
         [HttpPost]
         public async Task<ActionResult> Create(Reservation res) {
-            string[] tablePackageIds = res.TablePackageIds.ToArray();
             if (ModelState.IsValid)
             {
+                string[] tablePackageIds = res.TablePackageIds.ToArray();
                 string reservationId;
                 object root = new
                 {
@@ -88,7 +88,7 @@ namespace BookiWeb.Controllers {
             }
             else
             {
-                return View(res);
+                return RedirectToAction("Create", new { venueId = res.VenueId, message = "Did you fill out all fields?" });
             }
         }
         public async Task<ActionResult> Delete(int id) {
