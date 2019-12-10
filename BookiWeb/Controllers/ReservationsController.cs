@@ -1,4 +1,5 @@
 ﻿using BookiWeb.Models;
+using BookiWeb.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace BookiWeb.Controllers {
 
             using (var client = base.GetClient())
             {
-                HttpResponseMessage Res = await client.GetAsync("reservations");
+                HttpResponseMessage Res = await client.GetAsync($"customers/{SessionsHelper.GetId()}/reservations");
                 if (Res.IsSuccessStatusCode) {
                     var ReservationResponse = Res.Content.ReadAsStringAsync().Result;
                     ReservationInfo = JsonConvert.DeserializeObject<List<Reservation>>(ReservationResponse);
