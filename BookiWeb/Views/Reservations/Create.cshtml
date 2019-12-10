@@ -5,16 +5,6 @@
 @{
     ViewBag.Title = "Create";
 
-    List<SelectListItem> tablesList = new List<SelectListItem>();
-    foreach (Table t in ViewBag.Venue.Tables)
-    {
-        tablesList.Add(new SelectListItem
-        {
-            Text = $"{t.Name} - {t.NoOfSeats} seats",
-            Value = "" + t.Id
-        });
-    }
-
     List<SelectListItem> tablePackagesList = new List<SelectListItem>();
     foreach (TablePackage tp in ViewBag.Venue.TablePackages)
     {
@@ -41,18 +31,6 @@
         <p class="text-danger">@Request.QueryString["message"]</p>
     }
     <div class="form-group">
-        @Html.LabelFor(model => model.TableId, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.TableId, tablesList, "-- Select Table --", new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.TablePackageIds, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.TablePackageIds, tablePackagesList, "-- Select Table Packages --", new { @class = "form-control", multiple = "multiple" })
-        </div>
-    </div>
-    <div class="form-group">
         @Html.LabelFor(model => model.DateTimeStart, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.DateTimeStart, new { htmlAttributes = new { @class = "form-control" } })
@@ -65,6 +43,20 @@
         <div class="col-md-10">
             @Html.EditorFor(model => model.DateTimeEnd, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.DateTimeEnd, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TableId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select id="TableId" class="form-control"></select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TablePackageIds, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.TablePackageIds, tablePackagesList, "-- Select Table Packages --", new { @class = "form-control", multiple = "multiple" })
         </div>
     </div>
 
@@ -81,3 +73,26 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts {
+    <script>
+        function getAvailableTables() {
+            $('#TableId').empty();
+            let dateTimeStart = $("#DateTimeStart").val();
+            let dateTimeEnd = $("#DateTimeEnd").val();
+            $.get("https://localhost:44314/api/venues/1/available-tables?dateTimeStart=" + dateTimeStart + "&dateTimeEnd=" + dateTimeEnd, function (data) {
+                data.forEach(function (table) {
+                    $("#TableId").append("<option value='" + table.Id + "'>" + table.Name + " - " + table.NoOfSeats + " seats</option>");
+                });
+            });
+        };
+
+        $("#DateTimeStart").change(function () {
+            getAvailableTables();
+        });
+
+        $("#DateTimeEnd").change(function () {
+            getAvailableTables();
+        });
+    </script>   
+}

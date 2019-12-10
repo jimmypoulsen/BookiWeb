@@ -67,6 +67,8 @@ namespace BookiWeb.Controllers {
                 using (var client = base.GetClient())
                 {
                     var response = await client.PostAsync(base.BaseUrl + "/reservations", data);
+                    if(!response.IsSuccessStatusCode)
+                        return RedirectToAction("Create", new { venueId = res.VenueId, message = "That table is already booked!" });
                     reservationId = response.Content.ReadAsStringAsync().Result;
                     Debug.WriteLine($"reservationId = {reservationId}");
                 }

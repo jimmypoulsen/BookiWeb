@@ -9,10 +9,10 @@ namespace BookiWeb.Models {
         public int Id { get; set; }
         public int ReservationNo { get; set; }
         [Required]
-        [Display(Name = "From", Description = "When the reservation starts")]
+        [Display(Name = "From (dd/mm-YYYY H:i)", Description = "When the reservation starts")]
         public string DateTimeStart { get; set; }
         [Required]
-        [Display(Name = "To", Description = "When the reservation ends")]
+        [Display(Name = "To (dd/mm-YYYY H:i)", Description = "When the reservation ends")]
         public string DateTimeEnd { get; set; }
         public int State { get; set; }
         [Required]
