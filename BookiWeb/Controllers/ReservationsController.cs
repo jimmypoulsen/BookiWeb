@@ -53,6 +53,7 @@ namespace BookiWeb.Controllers {
 
         [HttpPost]
         public async Task<ActionResult> Create(Reservation res) {
+            Debug.WriteLine(res.TableId);
             if (ModelState.IsValid)
             {
                 string[] tablePackageIds = res.TablePackageIds.ToArray();

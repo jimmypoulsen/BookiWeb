@@ -5,6 +5,12 @@
 @{
     ViewBag.Title = "Create";
 
+    List<SelectListItem> tablesList = new List<SelectListItem>();
+    tablesList.Add(new SelectListItem
+    {
+        Text = "",
+        Value = ""
+    });
     List<SelectListItem> tablePackagesList = new List<SelectListItem>();
     foreach (TablePackage tp in ViewBag.Venue.TablePackages)
     {
@@ -49,7 +55,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.TableId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <select id="TableId" class="form-control"></select>
+            @Html.DropDownListFor(model => model.TableId, tablesList , "-- Select Table --", new { @class = "form-control" })
         </div>
     </div>
 
