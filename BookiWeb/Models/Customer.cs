@@ -18,6 +18,7 @@ namespace BookiWeb.Models
         [Required]
         public string Password { get; set; }
         public int CustomerNo { get; set; }
+        public string Salt { get; set; }
 
     }
 }

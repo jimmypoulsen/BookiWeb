@@ -27,6 +27,7 @@ namespace BookiWeb.Controllers
             if (ModelState.IsValid)
             {
                 customer.Password = HashingHelper.GenerateHash(customer.Password);
+                customer.Salt = HashingHelper.RandomString(20);
                 var customerInfo = new
                 {
                     Customer = customer
