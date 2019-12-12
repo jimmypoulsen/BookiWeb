@@ -42,8 +42,10 @@ namespace BookiWeb.Controllers
                     string result = response.Content.ReadAsStringAsync().Result;
                     if (response.IsSuccessStatusCode)
                         return RedirectToAction("Create", "Sessions");
+                    else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                        return RedirectToAction("Create", new { message = "That user already exists!" });
                     else
-                        return RedirectToAction("Create");
+                        return RedirectToAction("Create", new { message = "Did you fill out all the fields?" });
                 }
             }
             else
