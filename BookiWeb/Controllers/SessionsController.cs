@@ -27,8 +27,6 @@ namespace BookiWeb.Controllers
         {
             if (res.Email != null && res.Password != null)
             {
-                res.Password = HashingHelper.GenerateHash(res.Password);
-
                 var customer = new
                 {
                     Customer = res
