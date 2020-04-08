@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Diagnostics;
 
 namespace BookiWeb.Controllers
 {
@@ -33,15 +34,25 @@ namespace BookiWeb.Controllers
                     Customer = customer
                 };
                 var json = JsonConvert.SerializeObject(customerInfo);
+                Debug.WriteLine(json);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var url = BaseUrl + "/customers";
                 using (var client = new HttpClient())
                 {
                     var response = await client.PostAsync(url, data);
-                    string result = response.Content.ReadAsStringAsync().Result;
+                    var result = response.Content.ReadAsStringAsync().Result;
+
+                    HttpCookie AuthCookies = new HttpCookie("AuthCookies");
+
                     if (response.IsSuccessStatusCode)
-                        return RedirectToAction("Create", "Sessions");
+                    {
+                        AuthCookies["email"] = customer.Email;
+                        AuthCookies["customerId"] = "" + response.Content.ReadAsStringAsync().Result;
+                        AuthCookies.Expires = DateTime.Now.AddHours(72);
+                        Response.SetCookie(AuthCookies);
+                        return RedirectToAction("Create");
+                    }
                     else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
                         return RedirectToAction("Create", new { message = "That user already exists!" });
                     else
@@ -49,9 +60,7 @@ namespace BookiWeb.Controllers
                 }
             }
             else
-            {
                 return View(customer);
-            }
         }
     }
 }

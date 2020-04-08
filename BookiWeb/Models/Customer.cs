@@ -19,6 +19,7 @@ namespace BookiWeb.Models
         public string Password { get; set; }
         public int CustomerNo { get; set; }
         public string Salt { get; set; }
+        public string FacebookUserID { get; set; }
 
     }
 }

@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.social-icon {
+    width: 20px;
+    margin-left: 5px;
+    vertical-align: middle;
+}

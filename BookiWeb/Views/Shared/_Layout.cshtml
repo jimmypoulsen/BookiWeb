@@ -7,6 +7,20 @@
     <title>@ViewBag.Title - Booki</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script>
+        const facebook_app_id = "565456120724946";
+        const facebook_api_version = "v6.0";
+        const google_api_key = "AIzaSyBKfvb58wsqAUTemJVCO1tdhHRHQEl_UJ0";
+        const google_client_id = "1030965582845-0taj6flvldt538gvpvpcl5hb2lhbs1ko.apps.googleusercontent.com";
+    </script>
+    @Scripts.Render("~/bundles/fbsdk")
+    @Scripts.Render("~/bundles/googlesdk")
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+    <!-- check if Authentication.Google.Enabled is true -->
+    <script async defer src="https://apis.google.com/js/api.js"
+            onload="this.onload=function(){};handleClientLoad()"
+            onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
