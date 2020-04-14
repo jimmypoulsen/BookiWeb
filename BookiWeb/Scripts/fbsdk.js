@@ -7,6 +7,9 @@ window.fbAsyncInit = function() {
     }, { scope: 'user_about_me,email,public_profile' });
         
     FB.AppEvents.logPageView();
+
+    displayLoginButton();
+    console.log("checking ..");
 };
 
 (function(d, s, id){
@@ -17,13 +20,37 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+function displayLoginButton() {
+    console.log("toggling");
+    FB.getLoginStatus(function (response) {
+        if (response.status == 'connected') {
+            console.log("display none");
+            document.getElementById('fbLoginButton').style.display = 'none';
+        }
+        else {
+            console.log("display");
+            document.getElementById('fbLoginButton').style.display = 'inline-block';
+        }
+    });
+}
+
+function handleLogout() {
+    FB.getLoginStatus(function (response) {
+        if (response.status === 'connected') {
+            FB.logout(function (response) {
+                document.getElementById('logout_form').submit();
+            });
+        }
+    });
+}
+
 function checkLoginState() {
     FB.getLoginStatus(function(response) {
         console.log(JSON.stringify(response, null, 2));
 
         if (response.status == "connected") {
             let userId = response.authResponse.userID;
-            console.log(userId);
+            console.log(response);
             console.log("connected");
             FB.api('/me', { fields: 'email, name' }, function (response) {
                 let email = response.email;

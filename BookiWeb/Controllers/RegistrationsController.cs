@@ -51,7 +51,7 @@ namespace BookiWeb.Controllers
                         AuthCookies["customerId"] = "" + response.Content.ReadAsStringAsync().Result;
                         AuthCookies.Expires = DateTime.Now.AddHours(72);
                         Response.SetCookie(AuthCookies);
-                        return RedirectToAction("Create");
+                        return RedirectToAction("Index", "Home");
                     }
                     else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
                         return RedirectToAction("Create", new { message = "That user already exists!" });
