@@ -21,22 +21,17 @@ window.fbAsyncInit = function() {
 }(document, 'script', 'facebook-jssdk'));
 
 function displayLoginButton() {
-    console.log("toggling");
     FB.getLoginStatus(function (response) {
-        if (response.status == 'connected') {
-            console.log("display none");
+        if (response.status == 'connected')
             document.getElementById('fbLoginButton').style.display = 'none';
-        }
-        else {
-            console.log("display");
+        else
             document.getElementById('fbLoginButton').style.display = 'inline-block';
-        }
     });
 }
 
 function handleLogout() {
     FB.getLoginStatus(function (response) {
-        if (response.status === 'connected') {
+        if (response.status == 'connected') {
             FB.logout(function (response) {
                 document.getElementById('logout_form').submit();
             });
@@ -46,23 +41,18 @@ function handleLogout() {
 
 function checkLoginState() {
     FB.getLoginStatus(function(response) {
-        console.log(JSON.stringify(response, null, 2));
+        //console.log(JSON.stringify(response, null, 2));
 
         if (response.status == "connected") {
             let userId = response.authResponse.userID;
-            console.log(response);
-            console.log("connected");
             FB.api('/me', { fields: 'email, name' }, function (response) {
                 let email = response.email;
                 let name = response.name;
-
-                console.log(email);
 
                 $.get(`https://localhost:44314/api/customers/email?email=${email}`, function (data) {
                     if (data.length) {
                         // User exists in database
                         // TODO: Login user
-                        console.log(data[0]);
                         Cookies.set('AuthCookies', `email=${email}&customerId=${data[0].Id}`);
                         Cookies.set('FacebookAuth', 1);
                         document.location.href = "/";
