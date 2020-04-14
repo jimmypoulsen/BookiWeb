@@ -44,13 +44,24 @@ namespace BookiWeb.Controllers
                     var result = response.Content.ReadAsStringAsync().Result;
 
                     HttpCookie AuthCookies = new HttpCookie("AuthCookies");
+                    HttpCookie AuthenticatedWith = new HttpCookie("AuthenticatedWith");
 
                     if (response.IsSuccessStatusCode)
                     {
                         AuthCookies["email"] = customer.Email;
                         AuthCookies["customerId"] = "" + response.Content.ReadAsStringAsync().Result;
+                        if(customer.FacebookUserID != null)
+                        {
+                            AuthenticatedWith.Value = "Facebook";
+                        }
+                        if (customer.GoogleUserID != null)
+                        {
+                            AuthenticatedWith.Value = "Google";
+                        }
                         AuthCookies.Expires = DateTime.Now.AddHours(72);
+                        AuthenticatedWith.Expires = DateTime.Now.AddHours(72);
                         Response.SetCookie(AuthCookies);
+                        Response.SetCookie(AuthenticatedWith);
                         return RedirectToAction("Index", "Home");
                     }
                     else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)

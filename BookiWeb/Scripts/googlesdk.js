@@ -26,6 +26,7 @@ function initClient() {
 
         // Listen for sign-in state changes.
         GoogleAuth.isSignedIn.listen(updateSigninStatus);
+        GoogleAuth.isSignedIn.listen(handleLoginState);
 
         // Handle initial sign-in state. (Determine if user is already signed in.)
         var user = GoogleAuth.currentUser.get();
@@ -73,8 +74,39 @@ function setSigninStatus(isSignedIn) {
         revokeAccessButton.classList.toggle('d-none');
         authStatus.innerHTML = "You have not authorized this app or you are signed out";
     }
+    //console.log(user.getBasicProfile().getId());
 }
 
 function updateSigninStatus(isSignedIn) {
     setSigninStatus();
+}
+
+function handleLoginState() {
+    var user = GoogleAuth.currentUser.get();
+    var isAuthorized = user.hasGrantedScopes(SCOPE);
+    if (isAuthorized) {
+        let id = user.getBasicProfile().getId();
+        let email = user.getBasicProfile().getEmail();
+        let name = user.getBasicProfile().getName();
+
+        $.get(`https://localhost:44314/api/customers/email?email=${email}`, function (data) {
+            if (data.length) {
+                // User exists in database
+                // TODO: Login user
+                Cookies.set('AuthCookies', `email=${email}&customerId=${data[0].Id}`);
+                Cookies.set('AuthenticatedWith', "Google");
+                document.location.href = "/";
+            } else {
+                // User doesn't exist in database
+                // TODO: Register user
+                let modal = $('#registerModal');
+                // fill in relevant information collected from Facebook
+                modal.find('#Name').val(name);
+                modal.find('#Email').val(email);
+                modal.find('#Password').val(email);
+                modal.find('#GoogleUserID').val(id);
+                modal.modal('show');
+            }
+        });
+    }
 }

@@ -1,7 +1,7 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
-namespace BookiWeb {
+namespace BookiWeb
+{
     public class BundleConfig {
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles) {
@@ -18,6 +18,9 @@ namespace BookiWeb {
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/base").Include(
+                      "~/Scripts/base.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/fbsdk").Include(
                       "~/Scripts/fbsdk.js"));
